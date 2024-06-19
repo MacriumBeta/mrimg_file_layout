@@ -1,5 +1,8 @@
 <img src="../assets/ReflectX.png" width="300"> <br>Experience data independence with love, from us to you. <img src="../assets/Love_Heart_symbol.svg" width="30">
 
+> [!NOTE]  
+> **This repository contains beta code and incomplete information, and it is subject to change.**
+
 ***
 
 # What's in this repository?
