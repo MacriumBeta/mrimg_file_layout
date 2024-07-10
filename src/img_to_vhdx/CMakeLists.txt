@@ -12,10 +12,10 @@ link_directories($<$<CONFIG:Release>:${PROJECT_SOURCE_DIR}/dependencies/lib/zstd
 link_directories($<$<CONFIG:Debug>:${PROJECT_SOURCE_DIR}/dependencies/lib/zlib/debug>)
 link_directories($<$<CONFIG:Release>:${PROJECT_SOURCE_DIR}/dependencies/lib/zlib/release>)
 
-
-
 # Add source to this project's executable.
 add_executable (img_to_vhdx "img_to_vhdx.cpp" "arg_validator.cpp" "arg_validator.h" "console_print.cpp" "console_print.h" "img_to_vhdx.cpp" "vhdx_handler.cpp" "vhdx_handler.h")
+
+include_directories(../dependencies/include)
  
 # Link the libraries to your target
 target_link_libraries(img_to_vhdx encryption file_operations file_reader restore vhdx_manager)
