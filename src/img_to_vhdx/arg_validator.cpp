@@ -105,9 +105,10 @@ std::tuple<std::wstring, std::wstring, std::wstring, int, bool, bool, bool> pars
     }
 
     // Check if the file exists
-    if (!std::filesystem::exists(filename)) {
-        throw std::invalid_argument("File does not exist.");
-    }
+	std::filesystem::path path = filename;
+	if (!std::filesystem::exists(path)) {
+		throw std::invalid_argument("File does not exist.");
+	}
 
     std::wstring password;
     std::wstring outputPath;

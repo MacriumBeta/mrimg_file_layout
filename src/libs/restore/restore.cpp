@@ -88,7 +88,7 @@ void setNewDiskID(file_structs::Disk::DiskLayout& disk)
  * @param isCompressed A flag indicating whether the block is compressed.
  * @return A unique_ptr to the read (and possibly decrypted and decompressed) data.
  */
-std::unique_ptr<unsigned char[]> readBlock(file_structs::fileLayout& backupLayout, const EncryptionIVParams & ivParams, std::fstream* fileHandle, data_block& block)
+std::unique_ptr<unsigned char[]> readBlock(file_structs::fileLayout& backupLayout, const EncryptionIVParams & ivParams, std::fstream* fileHandle, DataBlockIndexElement& block)
 {
 	if (block.block_length == 0) {
 		return nullptr;
@@ -195,7 +195,7 @@ uint64_t calculateTotalBytes(file_structs::fileLayout& fileLayout)
  */
 void restoreDisk(const std::wstring& filePath, const std::string& password,const std::wstring targetDisk, int diskNumber, bool keepDiskId, ProgressCallback outputProgress/*= nullptr*/)
 {
-	auto targetDiskFileStream = openFileWithGuard(targetDisk);
+	auto targetDiskFileStream = openFileWithGuard(targetDisk, false);
 	auto targetDiskHandle = targetDiskFileStream.get();
 	BackupSet backupSet;
 	{

@@ -61,12 +61,18 @@ std::string wideToString(const std::wstring& wstr) {
  * Opens a file and returns a pointer to the file stream.
  *
  * @param filename The name of the file to open.
+ * @param filename The name of the file to open.
+ * @param read_only A flag indicating whether the file should be opened in read-only mode.
  * @return A pointer to the opened file stream.
  * @throws std::runtime_error if the file could not be opened.
  */
-std::fstream* openFile(const std::wstring& filename) {
+std::fstream* openFile(const std::wstring& filename, bool read_only) {
     std::fstream* file = new std::fstream();
-    file->open(filename, std::ios::in | std::ios::out | std::ios::binary);
+    if (read_only)
+		file->open(filename, std::ios::in | std::ios::binary);
+	else
+		file->open(filename, std::ios::in | std::ios::out | std::ios::binary);
+
     if (!file->is_open()) {
         char errorBuffer[100];
         strerror_s(errorBuffer, sizeof(errorBuffer), errno);
@@ -86,13 +92,14 @@ std::fstream* openFile(const std::wstring& filename) {
  * This ensures that the file is always closed properly, even if an exception is thrown.
  *
  * @param filename The name of the file to open.
+ * @param read_only A flag indicating whether the file should be opened in read-only mode.
  * @return A shared_ptr to the file stream, with a custom deleter that closes the file.
  */
-SharedFile openFileWithGuard(const std::wstring& filename) {
+SharedFile openFileWithGuard(const std::wstring& filename, bool read_only) {
     if (filename.empty()) {
         throw std::invalid_argument("Filename cannot be empty.");
     }
-    std::fstream* file = openFile(filename);
+    std::fstream* file = openFile(filename, read_only);
     return SharedFile(file, fileDeleter());
 }
 
@@ -104,7 +111,7 @@ SharedFile openFileWithGuard(const std::wstring& filename) {
  * @throws std::runtime_error if the file pointer could not be set.
  */
 void setFilePointer(std::fstream* file, std::streamoff offset, std::ios::seekdir pos) {
-    file->seekp(offset, pos);
+    file->seekg(offset, pos);
     if (file->fail()) {
         throw std::runtime_error("Failed to set file pointer.");
     }

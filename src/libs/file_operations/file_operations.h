@@ -32,10 +32,11 @@ typedef std::shared_ptr<std::fstream> SharedFile;
  * Opens a file and returns a pointer to the file stream.
  *
  * @param filename The name of the file to open.
+ * @param read_only A flag indicating whether the file should be opened in read-only mode.
  * @return A pointer to the opened file stream.
  * @throws std::runtime_error if the file could not be opened.
  */
-std::fstream* openFile(const std::wstring& filename);
+std::fstream* openFile(const std::wstring& filename, bool read_only);
 
 /**
  * Opens a file and returns a shared_ptr to the file stream with a custom deleter.
@@ -45,9 +46,10 @@ std::fstream* openFile(const std::wstring& filename);
  * This ensures that the file is always closed properly, even if an exception is thrown.
  *
  * @param filename The name of the file to open.
+ * @param read_only A flag indicating whether the file should be opened in read-only mode.
  * @return A shared_ptr to the file stream, with a custom deleter that closes the file.
  */
-SharedFile openFileWithGuard(const std::wstring& filename);
+SharedFile openFileWithGuard(const std::wstring& filename, bool read_only);
 
 /**
  * Sets the file pointer of a file.

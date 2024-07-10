@@ -20,7 +20,7 @@
 
 
  /**
-  * @struct data_block
+  * @struct DataBlockIndexElement
   * @brief  Represents a data block in the file.
   *
   * @var    file_position
@@ -35,7 +35,7 @@
   * @var    file_number
   *         Number of the file (16-bit integer).
   */
-struct data_block
+struct DataBlockIndexElement
 {
 	int64_t  file_position;
 	uint8_t  md5_hash[16];
@@ -54,11 +54,11 @@ struct data_block
  * @var    DeltaDataBlock::index
  *         The index of the delta data block.
  */
-struct delta_data_block
+struct DeltaDataBlock
 {
 public:
-	data_block datablock;
-	uint32_t   index;
+	DataBlockIndexElement delta_data_block;
+	uint32_t   block_index;
 };
 
 
@@ -167,9 +167,9 @@ namespace file_structs
 			PartitionGeometry _geometry; // [REQUIRED]
 			PartitionEntry _partition_table_entry;
 			FileSystem _file_system; // [REQUIRED]
-			std::vector <data_block> data_blocks; // [REQUIRED]
-			std::vector <delta_data_block> delta_data_blocks; // [REQUIRED]
-			std::vector <data_block> reserved_sectors_blocks; // [REQUIRED]
+			std::vector <DataBlockIndexElement> data_blocks; // [REQUIRED]
+			std::vector <DeltaDataBlock> delta_data_blocks; // [REQUIRED]
+			std::vector <DataBlockIndexElement> reserved_sectors_blocks; // [REQUIRED]
 		};
 		NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(PartitionLayout, _header, _geometry, _partition_table_entry, _file_system);
 	}

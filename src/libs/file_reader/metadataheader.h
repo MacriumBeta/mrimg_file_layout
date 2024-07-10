@@ -18,12 +18,13 @@
 
 
  /**************************************** BLOCK NAMES ****************************************/
-const char* const JSON_HEADER = "$JSON   ";    // File header JSON data
+const char* const JSON_HEADER   = "$JSON   ";  // File header JSON data
 const char* const BITMAP_HEADER = "$BITMAP ";  // Partition data
-const char* const FAT_HEADER = "$FAT    ";     // FAT32 FAT data
-const char* const CBT_HEADER = "$CBT    ";     // Changed Block Tracking data
-const char* const MFT_HEADER = "$MFT    ";     // Master File Table data
-const char* const TRACK_0 = "$TRACK0 ";        // 1st 1MB of data on the disk
+const char* const FAT_HEADER    = "$FAT    ";  // FAT32 FAT data
+const char* const CBT_HEADER    = "$CBT    ";  // Changed Block Tracking data
+const char* const MFT_HEADER    = "$MFT    ";  // Master File Table data
+const char* const TRACK_0       = "$TRACK0 ";  // 1st 1MB of data on the disk
+const char* const IDX_HEADER    = "$INDEX  ";  // Reserved sectors and data block index
 const char* const EXT_PAR_TABLE = "$EPT    ";  // Extended Partition Table data
 #define BLOCK_NAME_LENGTH 8                    // Length of block name strings
 /************************************************************************************************/
@@ -34,20 +35,20 @@ const unsigned long MAGIC_BYTES_VX_SIZE = (unsigned long)(sizeof(MAGIC_BYTES_VX)
 
 struct HeaderFlags
 {
-    unsigned char LastBlock : 1;    // Flag indicating whether this is the last block in the file
-    unsigned char Compression : 1;  // Flag indicating whether the block is compressed
-    unsigned char Encryption : 1;   // Flag indicating whether the block is encrypted
-    unsigned char Unused : 5;       // Remaining unused bits
+    unsigned char last_block  : 1;    // Flag indicating whether this is the last block in the file
+    unsigned char compression : 1;  // Flag indicating whether the block is compressed
+    unsigned char encryption : 1;   // Flag indicating whether the block is encrypted
+    unsigned char unused : 5;       // Remaining unused bits
 
-    HeaderFlags() : LastBlock(0), Compression(0), Encryption(0), Unused(0) {};
+    HeaderFlags() : last_block (0), compression(0), encryption(0), unused(0) {};
 };
 
 
 struct MetadataBlockHeader
 {
-    char  BlockName[8] = { 0 };      // Name of the block
-    unsigned long BlockLength = 0;   // Length of the block
-    unsigned char  Hash[16] = { 0 }; // MD5 hash of the block
-    HeaderFlags Flags;               // Flags for the block
-    char Padding[3] = { 0 };         // Padding for alignment
+    char  block_name[8] = { 0 };      // Name of the block
+    unsigned long block_Length = 0;   // Length of the block
+    unsigned char  hash[16] = { 0 }; // MD5 hash of the block
+    HeaderFlags flags;               // Flags for the block
+    char padding[3] = { 0 };         // Padding for alignment
 };

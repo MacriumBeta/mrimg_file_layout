@@ -31,12 +31,12 @@ void mapDeltaToFullIndex(file_structs::Partition::PartitionLayout& partitionToRe
     // Iterate over each delta data block and map it to the corresponding full data block
     for (const auto& deltaBlock : partitionToMap.delta_data_blocks) {
         // Check if the index is within the current size of the vector
-        if (deltaBlock.index >= partitionToRestore.data_blocks.size()) {
+        if (deltaBlock.block_index >= partitionToRestore.data_blocks.size()) {
             // Resize the vector to accommodate the index
-            partitionToRestore.data_blocks.resize(deltaBlock.index + 1);
+            partitionToRestore.data_blocks.resize(deltaBlock.block_index + 1);
         }
         // Use the index in deltaBlock to access the corresponding data block in full.data_blocks
-        partitionToRestore.data_blocks[deltaBlock.index] = deltaBlock.datablock;
+        partitionToRestore.data_blocks[deltaBlock.block_index] = deltaBlock.delta_data_block;
     }
 }
 
@@ -175,7 +175,7 @@ void addBackupFileToSet(BackupSet& backupSet, const std::filesystem::path& fileP
 
     // Add the file number and file handle to the indexHandleMap in the backupSet
     // The indexHandleMap is used to quickly find the file handle for a given file number
-    auto sharedFileHandle = openFileWithGuard(filePath.wstring());
+    auto sharedFileHandle = openFileWithGuard(filePath.wstring(), true);
     backupSet.indexHandleMap[backupFile._header.file_number] = sharedFileHandle;
 
     // Handle file merges due to consolidation

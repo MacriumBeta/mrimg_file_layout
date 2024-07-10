@@ -160,7 +160,7 @@ void validatePassword(file_structs::fileLayout& backupLayout, const std::string&
  */
 void readBackupFile(const std::wstring& filename, file_structs::fileLayout& backupLayout,const std::string password, bool loadIndex /* = true */) {
 	// Open the file and get a handle to it
-	auto fileGuard = openFileWithGuard(filename);
+	auto fileGuard = openFileWithGuard(filename, true);
 	std::fstream* fileHandle = fileGuard.get();
 
 	// Calculate the offset to the end of the file
@@ -213,8 +213,8 @@ void readBackupFile(const std::wstring& filename, file_structs::fileLayout& back
 			readDiskMetadata(backupLayout, fileHandle, disk);
 			// Iterate over each partition in the disk
 			for (auto& partition : disk.partitions) {
-				// Skip the partition metadata as it isn't used for restore
-				skipMetadata(fileHandle);
+				// Skip the partition metadata as it isn't used for this restore
+				readPartitionMetadataData(backupLayout, fileHandle);
 				int32_t blockCount;
 				// Read the block count
 				readFile(fileHandle, &blockCount, sizeof(blockCount));
@@ -223,7 +223,7 @@ void readBackupFile(const std::wstring& filename, file_structs::fileLayout& back
 					// Resize the reserved sectors blocks vector to the block count
 					partition.reserved_sectors_blocks.resize(blockCount);
 					// Read the data blocks into the reserved sectors blocks vector
-					readFile(fileHandle, partition.reserved_sectors_blocks.data(), sizeof(data_block) * blockCount);
+					readFile(fileHandle, partition.reserved_sectors_blocks.data(), sizeof(DataBlockIndexElement) * blockCount);
 				}
 				// Read the block count again
 				readFile(fileHandle, &blockCount, sizeof(blockCount));
@@ -235,19 +235,19 @@ void readBackupFile(const std::wstring& filename, file_structs::fileLayout& back
 							// Resize the delta data blocks vector to the block count
 							partition.delta_data_blocks.resize(blockCount);
 							// Read the delta data blocks into the data blocks vector
-							readFile(fileHandle, partition.delta_data_blocks.data(), sizeof(delta_data_block) * blockCount);
+							readFile(fileHandle, partition.delta_data_blocks.data(), sizeof(DeltaDataBlock) * blockCount);
 						}
 						else {
 							// Resize the data blocks vector to the block count
 							partition.data_blocks.resize(blockCount);
 							// Read the data blocks into the data blocks vector
-							readFile(fileHandle, partition.data_blocks.data(), sizeof(data_block) * blockCount);
+							readFile(fileHandle, partition.data_blocks.data(), sizeof(DataBlockIndexElement) * blockCount);
 
 						}
 					}  
 					else {
 						// Skip the data blocks
-						fileOffset = isdelta ? sizeof(delta_data_block) * blockCount : sizeof(data_block) * blockCount;
+						fileOffset = isdelta ? sizeof(DeltaDataBlock) * blockCount : sizeof(DataBlockIndexElement) * blockCount;
 						setFilePointer(fileHandle, fileOffset, std::ios::cur);
 					}
 				}

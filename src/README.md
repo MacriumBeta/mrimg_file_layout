@@ -22,11 +22,20 @@ In the Repository location type `https://github.com/macriumsoftware/mrimg_file_l
 ### Building with CMake
 
 Once the clone completes, Visual Studio will populate the `Solution Explorer` tab with project files using the found CMakelists.txt files.  
-Head over to `Solution Explorer`, and make sure you're viewing the `CMake Targets` view. 
+Head over to `Solution Explorer`, and make sure you're viewing the `CMake Targets view`. 
+
+> [!NOTE]
+> If you don't see the `CMake Targets view` option, then close Visual Studio and re-open using the `\mrimg_file_layout\src` folder. 
 
 <img src="../assets/cmake.png" width="300">
 
 Then right click on the project root node and select `Build All`.
+
+To run `img_to_vhdx`, make sure `x64 Debug` is selected in the toolbar build combobox then right click on the `img_to_vhdx` project in the solution explorer, and click `debug`.
+
+<img src="../assets/cmake_debug.png" width="400">
+  
+
 ***
 ### Building with the VS2022 Solution file
 
