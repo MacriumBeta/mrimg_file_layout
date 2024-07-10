@@ -277,7 +277,7 @@ Each `DataBlockIndexElement` specifies both the position and the size of a `Data
 struct DataBlockIndexElement
 {
     int64_t  file_position;  // Position of the data block in the file (64-bit integer).
-    uint8_t  md5_hash[16];   // MD5 hash of the raw data block (16-byte array).
+    uint8_t  md5_hash[16];   // MD5 hash of the file data block (16-byte array).
     uint32_t block_length;   // Length of the data block.
     uint16_t file_number;    // Number of the file (16-bit integer).
 };
