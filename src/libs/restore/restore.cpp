@@ -277,7 +277,8 @@ void restoreDisk(const std::wstring& filePath, const std::string& password,const
 			if (outputProgress) outputProgress(totalBackupSize, bytesProcessed, lastUpdateTime);
 		}
 		int blockIndex = 0;
-		auto lcn0Start = partition._file_system.lcn0_offset;  
+		// calculate the file offset for the first data block in the partition
+		auto lcn0Start = partition._geometry.start + (partition._file_system.lcn0_offset - partition._file_system.start);
 		// Loop through each data block in the partition
 		int index = 0;
 		for (auto& dataBlock : partition.data_blocks) {

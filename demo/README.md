@@ -3,7 +3,7 @@
 ***
 **This package includes the following components:**
 
-1. `A24A50EE7667020C-demo-00-00.mrimg`: A Macrium Reflect Image file 
+1. `2394E9AA621DDC3A-00-00.mrimg`: A Macrium Reflect Image file 
     containing a backup of a partition.
 2. `image_to_vhdx.exe`: A utility that converts the .mrimg file into a VHDX 
     (Windows Virtual Hard Disk) file.
